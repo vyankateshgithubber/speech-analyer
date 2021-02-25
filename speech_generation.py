@@ -1,15 +1,20 @@
 import speech_recognition as sr
+from recorder import Recorder
+r = Recorder()
+r.record(15, output='output.wav')
+r.play('output.wav')
 
+
+AUDIO_FILE = ("output.wav")
 # obtain audio from the microphone
 r = sr.Recognizer()
-with sr.Microphone() as source:
-    print("Say something!")
-    audio = r.listen(source)
+with sr.AudioFile(AUDIO_FILE) as source:
+    audio = r.record(source)
 
 # recognize speech using Sphinx
 try:
     print(r.recognize_google(audio))
 except sr.UnknownValueError:
-    print("Sphinx could not understand audio")
+    print("Google could not understand audio")
 except sr.RequestError as e:
-    print("Sphinx error; {0}".format(e))
+    print("Google error; {0}".format(e))
