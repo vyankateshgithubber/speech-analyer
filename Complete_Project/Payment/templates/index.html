@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech recognition</title>
+    <script>
+    function sub() {
+    console.log('sub function');
+    $("#form1").submit();
+    }
+  </script>
+  <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/style.css') }}">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body bgcolor="skyblue">
+		<header  >
+      
+			<h1 align="center" >Real time Sentiment Analysis</h1>
+			<marquee style="color:white"><u><h3>GET YOUR SENTIMENT ANALYSIS HERE!!!!</h3></u></marquee>
+			<img class="user_image" src="{{url_for('static', filename='images.png')}}">
+		</header>
+		
+		<nav style="background-color:black;">
+			<a href="http://www.coep.org.in" >Home</a>&nbsp;|&nbsp;&nbsp;&nbsp;
+			<a href="http://www.collegedunia.com/" >College Review</a>&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+			<a href="https://www.coep.org.in/academics" >Courses</a>&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+			<a href="https://www.coep.org.in/admissions" >Admissions</a>&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+			<a href="https://www.coep.org.in/placementcell" >Placement</a>&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+			<a href="https://www.coep.org.in/content/clubs" >Clubs </a>&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+			<a href="https://www.coep.org.in/about" >About</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		</nav>
+		<div class="making">
+		<div class="sidebar">
+      <div><h2><u>For recording a new file</u></h2></div>
+			<div><button id="btnStart" class="record" >start</button></div>
+      <div><video controls autostart="false" muted></video></div>
+      <div><button id="btnStop" class="record" >stop</button></div>
+      <div><video id="vid2" controls autostart="false" ></video></div>
+		</div>
+		<div id="speech">
+        <form id="form1" method="POST" enctype="multipart/form-data" action="/output">
+            <p style="font-size:22px;">Name : <input type="text" name="name" placeholder="Suresh Kumar" required></p>
+			<p style="font-size:22px;">Email : <input type="email" name="email" id="email" placeholder="abc@gmail.com" required></p>
+
+            <p style="font-size:22px;">Upload File :<input type="file" id="file" name="file" accept=".wav" required></p><br> 
+            <div id="speechtranscript">
+                  <h1><u>Transcript :</u> </h1>
+                  <p><h2>{{transcript}}</h2></p>
+            </div>
+          <div id="emotion">
+                <h1><u>The sentiment is : </u></h1> 
+                <p><h2>{{emotion}}</h2></p>
+                <img id="picture" src="data:image/jpeg;base64,{{ image }}" alt="Loading">
+            </div>
+        <input id="transcribe" type="submit" value="Transcribe & Predict" onclick="printDiv('printableArea')">
+      	
+          </form>
+		</div>
+	</div>
+  	<div class=bottom>
+			<div align="center" class="founder">
+			<div class="element">
+			<h2 align="left" style="color:white;"><u>Developers</u> </h2><hr>
+			<p align="center" ><img src="{{url_for('static', filename='pic.png')}}"  border="2" height="100px" class="clip-path"></p>
+			<h2 align="center"><u>TEAM</u></h2>
+			</div>
+			<div class="element" style="color:white;">
+			<h4>1. Gaurav Vyas</h4>
+      <h4>2. Majeed Mulla</h4>
+      <h4>3. Vyankatesh Goski</h4>
+			<p><b><i><u>------The secret of getting ahead is getting started----- </u></i></b></p>
+			</div>
+		</div>
+		<footer>
+			<a href="#">FAQ </a>&nbsp; &nbsp;  &nbsp; &nbsp;
+			<a href="#">Contact us </a>&nbsp; &nbsp;  &nbsp; &nbsp;
+			<a href="#">Terms and Conditions </a>&nbsp; &nbsp;  &nbsp; &nbsp;
+			<a href="#">Privacy policy  </a>&nbsp; &nbsp;  &nbsp; &nbsp;
+			<a href="#">References  </a>&nbsp; &nbsp; &nbsp; &nbsp;
+			<a href="#">&copy;Copy right 2021</a>&nbsp; &nbsp;  &nbsp; &nbsp;
+		</footer>
+     <script>
+
+
+        let constraintObj = {
+            audio: true,
+            video: false,
+        };
+        // width: 1280, height: 720  -- preference only
+        // facingMode: {exact: "user"}
+        // facingMode: "environment"
+
+        //handle older browsers that might implement getUserMedia in some way
+        if (navigator.mediaDevices === undefined) {
+            navigator.mediaDevices = {};
+            navigator.mediaDevices.getUserMedia = function(constraintObj) {
+                let getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+                if (!getUserMedia) {
+                    return Promise.reject(new Error('getUserMedia is not implemented in this browser'));
+                }
+                return new Promise(function(resolve, reject) {
+                    getUserMedia.call(navigator, constraintObj, resolve, reject);
+                });
+            }
+        }else{
+            navigator.mediaDevices.enumerateDevices()
+            .then(devices => {
+                devices.forEach(device=>{
+                    console.log(device.kind.toUpperCase(), device.label);
+                    //, device.deviceId
+                })
+            })
+            .catch(err=>{
+                console.log(err.name, err.message);
+            })
+        }
+
+        navigator.mediaDevices.getUserMedia(constraintObj)
+        .then(function(mediaStreamObj) {
+            //connect the media stream to the first video element
+            let video = document.querySelector('video');
+            if ("srcObject" in video) {
+                video.srcObject = mediaStreamObj;
+            } else {
+                //old version
+                video.src = window.URL.createObjectURL(mediaStreamObj);
+            }
+
+            video.onloadedmetadata = function(ev) {
+                //show in the video element what is being captured by the webcam
+                video.play();
+            };
+
+            //add listeners for saving video/audio
+            let start = document.getElementById('btnStart');
+            let stop = document.getElementById('btnStop');
+            let vidSave = document.getElementById('vid2');
+            let mediaRecorder = new MediaRecorder(mediaStreamObj);
+            let chunks = [];
+
+            start.addEventListener('click', (ev)=>{
+                mediaRecorder.start();
+                console.log(mediaRecorder.state);
+            })
+            stop.addEventListener('click', (ev)=>{
+                mediaRecorder.stop();
+                console.log(mediaRecorder.state);
+            });
+            mediaRecorder.ondataavailable = function(ev) {
+                chunks.push(ev.data);
+            }
+            mediaRecorder.onstop = (ev)=>{
+                let blob = new Blob(chunks, { 'type' : 'audio/wav;' });
+                chunks = [];
+                let videoURL = window.URL.createObjectURL(blob);
+                vidSave.src = videoURL;
+            }
+        })
+        .catch(function(err) {
+            console.log(err.name, err.message);
+        });
+
+        
+    </script>
+	</div>
+</body>
+</html>

@@ -1,0 +1,155 @@
+body{
+    font-family: monospace;
+    background-image:url("/static/background.jpg");
+    background-repeat:no-repeat ;
+    background-size: cover;
+    background-attachment: fixed;
+    object-fit: contain;
+    padding: 10px;
+}
+header{
+    size:100%;
+    color:black;
+    font-size: larger;
+    text-decoration: underline;
+    color:white;
+    text-shadow: 1px 2px 1px gray;
+    background-image:url("/static/download.jfif");
+    background-repeat:no-repeat ;
+    background-color:darkslategray;
+    background-size:400px;
+    background-position: right;
+  
+    padding: 7px;
+    border: none;
+    border-radius: 6px;
+
+}
+.founder {
+    color:black;
+    padding:20px;
+    font-size :large;
+    margin:10px ;
+    border: 4px solid black;
+}
+.founder element{
+    justify-content: center;
+}
+footer{
+    background-color:black;
+    padding:10px;
+    border:none;
+    border-radius: 6px;
+
+}
+nav{
+    padding: 10px;
+    border:5px;
+    border-radius :7px;
+}
+a[href]{
+    color:blue;
+    padding : 6px;
+    font-size:130%;
+}
+a[href]:hover{
+    color:orangered;
+}
+.clip-path{
+    clip-path: circle(50% at 50% 50%);
+    border:3px solid black;
+}
+
+.sidebar{
+    display: grid;
+    grid-template-columns: auto;
+    width:300px;
+    background-color: darkcyan;
+    border-radius: 8px;
+    grid-col
+}
+.sidebar a[href]{
+    background-color: black;
+    border: none;
+    border-radius: 6px;
+    margin: 10px;
+    padding-right: 130px;
+    font-size: 15px;
+    text-decoration: underline;
+}
+.sidebar a:hover{
+    color: orangered;
+}
+#speech{
+      grid-column-start: 2;   
+}
+.making{
+    display: grid;
+    grid-auto-columns: 350px;
+    column-gap: 0px;
+
+}
+.bottom{
+    display: grid;
+    grid-template-rows:auto;
+    color:whitesmoke;
+}
+input{
+    width:40rem;
+    padding :7px;
+    border-radius: 8px;
+    border:none;
+    margin: 5px;;
+    
+    
+}
+input[type="submit"] {
+    background-color: orangered;
+    cursor :pointer;
+    padding:5px 95% 5px 10px;
+    margin:10px;
+    border:lightgreen;
+    border-radius: 5px;
+    text-align:center;
+    text-decoration: underline;
+    font-size: larger;
+}
+.record {
+    background-color: orangered;
+    cursor :pointer;
+    padding:5px 70% 5px 10px;
+    margin:10px;
+    border:lightgreen;
+    border-radius: 5px;
+    text-align:center;
+    text-decoration: underline;
+    font-size: larger;
+}
+@media only screen and (max-width:600px){
+    body{
+        color:red;
+    }
+}
+.user_image{
+    display: float;
+    position:absolute;
+    top: 30px;
+    left:30px;
+    height: 130px;
+    border:black solid 3px;
+    border-radius: 5px;
+}
+.clip-path{
+    clip-path: circle(50% at 50% 50%);
+    border:3px solid black;
+}
+#picture{
+  border:black solid 2px;
+  border-radius:6px;
+ // height:70px;
+  //widht:130px;
+
+}
+#transcribe:hover ,.record:hover {
+  background-color:lightgreen;
+}
